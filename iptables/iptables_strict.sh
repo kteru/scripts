@@ -84,7 +84,7 @@ fi
 
 # DROP
 ${IPTABLES} -A INPUT -j DROP
-${IPTABLES} -A INPUT -j FORWARD
+${IPTABLES} -A FORWARD -j DROP
 
 #---------------
 
