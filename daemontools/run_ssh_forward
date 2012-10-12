@@ -1,0 +1,14 @@
+#!/bin/sh
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+sleep 3
+exec 2>&1
+
+## LocalForward
+#exec ssh -o ServerAliveInterval=30 -N -L 5900:192.168.1.100:5900 example.com -l user -g
+## RemoteForward
+#exec ssh -o ServerAliveInterval=30 -N -R 8022:127.0.0.1:22 example.com -l user
+## DynamicForward
+#exec ssh -o ServerAliveInterval=30 -N -D 127.0.0.1:1080 example.com -l user
+

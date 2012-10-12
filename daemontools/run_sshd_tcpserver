@@ -1,0 +1,11 @@
+#!/bin/sh
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+sleep 3
+
+tcprules allow.cdb allow.tmp < allow
+
+exec env - PATH=$PATH \
+tcpserver -HRDl0 -x allow.cdb -u 0 0 22 sshd -i -e 2>&1
+

@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# 20110902
+# iptables up
+#
+# === this script should be placed /etc/network/if-pre-up.d ===
+#
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+IPTABLES=/sbin/iptables
+
+
+# clear
+${IPTABLES} -F
+${IPTABLES} -F -t nat
+${IPTABLES} -X
+${IPTABLES} -Z
+
+# policy
+${IPTABLES} -P INPUT ACCEPT
+${IPTABLES} -P OUTPUT ACCEPT
+${IPTABLES} -P FORWARD ACCEPT
+
+#---------------
+
+#---------------
+

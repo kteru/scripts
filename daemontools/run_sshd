@@ -1,0 +1,8 @@
+#!/bin/sh
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+sleep 3
+exec 2>&1
+exec /usr/sbin/sshd -De -f `dirname ${0}`/sshd_config
+
