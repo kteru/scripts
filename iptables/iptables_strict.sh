@@ -15,9 +15,9 @@ _initialize() {
   ${IPTABLES} -F -t nat
   ${IPTABLES} -X
   ${IPTABLES} -Z
-  ${IPTABLES} -P INPUT DROP
+  ${IPTABLES} -P INPUT ACCEPT
   ${IPTABLES} -P OUTPUT ACCEPT
-  ${IPTABLES} -P FORWARD DROP
+  ${IPTABLES} -P FORWARD ACCEPT
 }
 
 _finalize() {
@@ -28,6 +28,12 @@ _finalize() {
 _initialize
 
 #---------------
+
+### policy
+${IPTABLES} -P INPUT DROP
+${IPTABLES} -P OUTPUT ACCEPT
+${IPTABLES} -P FORWARD DROP
+### policy
 
 # ACCEPT lo
 ${IPTABLES} -A INPUT -i lo -j ACCEPT
@@ -82,9 +88,10 @@ if [ -s "/root/deny_ip" ]; then
   done
 fi
 
-# DROP
+### DROP
 ${IPTABLES} -A INPUT -j DROP
 ${IPTABLES} -A FORWARD -j DROP
+### DROP
 
 #---------------
 
