@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # 20111207
 # getopts template
@@ -31,7 +31,7 @@ while getopts :ab:cd: OPT; do
   esac
 done
 
-shift `expr ${OPTIND} - 1`
+shift $((OPTIND - 1))
 
 
 #
