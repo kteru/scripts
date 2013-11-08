@@ -43,7 +43,7 @@ trap 'kill $$' 2
 
 command=`cat /dev/stdin`
 
-for host in `cat "${VALUE_l}" | grep -v "^#"`; do
+for host in `cat "${HOST_LIST}" | grep -v "^#"`; do
     echo "=== ${host} ==="
     echo "${command}" | ssh -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnectTimeout=10 -q ${SSH_USER}@${host} bash
 done
