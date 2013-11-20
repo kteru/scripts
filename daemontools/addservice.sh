@@ -12,8 +12,6 @@ export PATH
 #
 SERVICE_NAME=${1}
 SERVICE_DIR=${2:-/var/service}
-LOG_USER=logadmin
-LOG_GROUP=logadmin
 
 
 #
@@ -44,8 +42,6 @@ chmod +t ${SERVICE_DIR}/${SERVICE_NAME}
 mkdir ${SERVICE_DIR}/${SERVICE_NAME}/log
 mkdir ${SERVICE_DIR}/${SERVICE_NAME}/log/main
 touch ${SERVICE_DIR}/${SERVICE_NAME}/log/status
-chown ${LOG_USER}:${LOG_GROUP} ${SERVICE_DIR}/${SERVICE_NAME}/log/main
-chown ${LOG_USER}:${LOG_GROUP} ${SERVICE_DIR}/${SERVICE_NAME}/log/status
 
 
 #
@@ -70,7 +66,7 @@ chmod 755 ${SERVICE_DIR}/${SERVICE_NAME}/run
 cat <<EOF > ${SERVICE_DIR}/${SERVICE_NAME}/log/run
 #!/bin/sh
 
-exec setuidgid ${LOG_USER} multilog t s1000000 n100 ./main
+exec multilog t s1000000 n100 ./main
 EOF
 chmod 755 ${SERVICE_DIR}/${SERVICE_NAME}/log/run
 
