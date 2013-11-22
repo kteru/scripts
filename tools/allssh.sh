@@ -45,9 +45,14 @@ SSH_OPTS="-q -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null -oConnect
 trap 'kill $$' 2
 
 command=`cat /dev/stdin`
+hosts=`cat "${HOST_LIST}" | grep -v "^#" | grep -v "^$"`
 
-for host in `cat "${HOST_LIST}" | grep -v "^#"`; do
-    echo "=== ${host} ==="
-    echo "${command}" | ssh ${SSH_OPTS} ${SSH_USER}@${host} bash
+_cnt=0
+_num=`echo "${hosts}" | wc -l`
+
+for host in ${hosts}; do
+  _cnt=$((_cnt + 1))
+  echo "=== (${_cnt}/${_num}) ${host} ==="
+  echo "${command}" | ssh ${SSH_OPTS} ${SSH_USER}@${host} bash
 done
 
