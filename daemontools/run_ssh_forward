@@ -6,9 +6,14 @@ sleep 3
 exec 2>&1
 
 ## LocalForward
-#exec ssh -o ServerAliveInterval=30 -N -L 5900:192.168.1.100:5900 example.com -l user -g
+#exec ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=20 -o ServerAliveCountMax=3 \
+#-N -g -L 5900:192.168.1.100:5900 example.com -l user -i "`dirname ${0}`/id_rsa"
+
 ## RemoteForward
-#exec ssh -o ServerAliveInterval=30 -N -R 8022:127.0.0.1:22 example.com -l user
+#exec ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=20 -o ServerAliveCountMax=3 \
+#-N -R 8022:127.0.0.1:22 example.com -l user -i "`dirname ${0}`/id_rsa"
+
 ## DynamicForward
-#exec ssh -o ServerAliveInterval=30 -N -D 127.0.0.1:1080 example.com -l user
+#exec ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ServerAliveInterval=20 -o ServerAliveCountMax=3 \
+#-N -D 1080 example.com -l user -i "`dirname ${0}`/id_rsa"
 
