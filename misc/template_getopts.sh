@@ -26,7 +26,7 @@ _usage() {
 # getopts
 #
 while getopts :ab:cd: OPT; do
-  case ${OPT} in
+  case "${OPT}" in
     a) ENABLE_a="t";;
     b) ENABLE_b="t"; VALUE_b=${OPTARG};;
     c) ENABLE_c="t";;
