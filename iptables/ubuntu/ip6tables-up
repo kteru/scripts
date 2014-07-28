@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# ip6tables up
+#
+# === this script should be placed /etc/network/if-pre-up.d ===
+#
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+IP6TABLES=/sbin/ip6tables
+
+
+# clear
+${IP6TABLES} -F
+${IP6TABLES} -X
+${IP6TABLES} -Z
+
+# policy
+${IP6TABLES} -P INPUT ACCEPT
+${IP6TABLES} -P OUTPUT ACCEPT
+${IP6TABLES} -P FORWARD ACCEPT
+
+#---------------
+
+#---------------
+
