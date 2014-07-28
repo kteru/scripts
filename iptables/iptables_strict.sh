@@ -29,11 +29,11 @@ _initialize
 
 #---------------
 
-### policy
+### policy ###
 ${IPTABLES} -P INPUT DROP
 ${IPTABLES} -P OUTPUT ACCEPT
 ${IPTABLES} -P FORWARD DROP
-### policy
+### policy ###
 
 # ACCEPT lo
 ${IPTABLES} -A INPUT -i lo -j ACCEPT
@@ -50,48 +50,20 @@ ${IPTABLES} -A INPUT -p icmp --icmp-type echo-request -j pod
 # REJECT tcp/113 ident
 ${IPTABLES} -A INPUT -p tcp --dport 113 -j REJECT --reject-with tcp-reset
 
+#---------------
 
 # ssh
 ${IPTABLES} -A INPUT -p tcp --dport 22 -j ACCEPT
-## dns
-#${IPTABLES} -A INPUT -p udp --dport 53 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 53 -j ACCEPT
-## http https
-#${IPTABLES} -A INPUT -p tcp --dport 80 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 443 -j ACCEPT
-## smtp submission smtps
-#${IPTABLES} -A INPUT -p tcp --dport 25 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 587 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 465 -j ACCEPT
-## pop3 pop3s imap imaps
-#${IPTABLES} -A INPUT -p tcp --dport 110 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 995 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 143 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 993 -j ACCEPT
-## mysql
-#${IPTABLES} -A INPUT -p tcp --dport 3306 -j ACCEPT
-## samba
-#${IPTABLES} -A INPUT -p udp --dport 137 -j ACCEPT
-#${IPTABLES} -A INPUT -p udp --dport 138 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 139 -j ACCEPT
-#${IPTABLES} -A INPUT -p tcp --dport 445 -j ACCEPT
-## ldap
-#${IPTABLES} -A INPUT -p tcp --dport 389 -j ACCEPT
-## mosh
-#${IPTABLES} -A INPUT -p udp --dport 60000:61000 -j ACCEPT
+# http, https
+${IPTABLES} -A INPUT -p tcp --dport 80 -j ACCEPT
+${IPTABLES} -A INPUT -p tcp --dport 443 -j ACCEPT
 
+#---------------
 
-# DROP ip
-if [ -s "/root/deny_ip" ]; then
-  for ip in `cat /root/deny_ip`; do
-    ${IPTABLES} -I INPUT -s ${ip} -j DROP
-  done
-fi
-
-### DROP
+### DROP ###
 ${IPTABLES} -A INPUT -j DROP
 ${IPTABLES} -A FORWARD -j DROP
-### DROP
+### DROP ###
 
 #---------------
 
