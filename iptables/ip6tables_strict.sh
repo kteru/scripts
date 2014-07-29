@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# ip6tables
+#
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+export PATH
+
+IP6TABLES=/sbin/ip6tables
+IP6TABLES_INIT=/etc/init.d/ip6tables
+
+
+_initialize() {
+  ${IP6TABLES} -F
+  ${IP6TABLES} -X
+  ${IP6TABLES} -Z
+  ${IP6TABLES} -P INPUT ACCEPT
+  ${IP6TABLES} -P OUTPUT ACCEPT
+  ${IP6TABLES} -P FORWARD ACCEPT
+}
+
+_finalize() {
+  ${IP6TABLES_INIT} save && \
+  ${IP6TABLES_INIT} restart
+}
+
+_initialize
+
+#---------------
+
+### policy ###
+${IP6TABLES} -P INPUT DROP
+${IP6TABLES} -P OUTPUT ACCEPT
+${IP6TABLES} -P FORWARD DROP
+### policy ###
+
+# ACCEPT lo
+${IP6TABLES} -A INPUT -i lo -j ACCEPT
+
+# ACCEPT link local
+${IP6TABLES} -A INPUT -s fe80::/10 -j ACCEPT
+
+# ACCEPT reply
+${IP6TABLES} -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# DROP ping of death
+${IP6TABLES} -N pod
+${IP6TABLES} -A pod -m limit --limit 1/s --limit-burst 5 -j ACCEPT
+${IP6TABLES} -A pod -j DROP
+${IP6TABLES} -A INPUT -p icmpv6 --icmpv6-type echo-request -j pod
+
+# REJECT tcp/113 ident
+${IP6TABLES} -A INPUT -p tcp --dport 113 -j REJECT --reject-with tcp-reset
+
+#---------------
+
+# ssh
+${IP6TABLES} -A INPUT -p tcp --dport 22 -j ACCEPT
+# http, https
+${IP6TABLES} -A INPUT -p tcp --dport 80 -j ACCEPT
+${IP6TABLES} -A INPUT -p tcp --dport 443 -j ACCEPT
+
+#---------------
+
+### DROP ###
+${IP6TABLES} -A INPUT -j DROP
+${IP6TABLES} -A FORWARD -j DROP
+### DROP ###
+
+#---------------
+
+trap '_finalize && exit 0' 2
+echo "=> please press Ctrl-C within 30sec."
+sleep 30
+echo "=> 30sec has elapsed. rules are cleared."
+_initialize
+
