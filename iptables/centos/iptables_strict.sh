@@ -41,11 +41,8 @@ ${IPTABLES} -A INPUT -i lo -j ACCEPT
 # ACCEPT reply
 ${IPTABLES} -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# DROP ping of death
-${IPTABLES} -N pod
-${IPTABLES} -A pod -m limit --limit 1/s --limit-burst 5 -j ACCEPT
-${IPTABLES} -A pod -j DROP
-${IPTABLES} -A INPUT -p icmp --icmp-type echo-request -j pod
+# ACCEPT icmp
+${IPTABLES} -A INPUT -p icmp -j ACCEPT
 
 # REJECT tcp/113 ident
 ${IPTABLES} -A INPUT -p tcp --dport 113 -j REJECT --reject-with tcp-reset
