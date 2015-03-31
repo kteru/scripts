@@ -6,8 +6,6 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 export PATH
 
 IP6TABLES=/sbin/ip6tables
-IP6TABLES_INIT=/etc/init.d/ip6tables
-
 
 _initialize() {
   ${IP6TABLES} -F
@@ -19,8 +17,11 @@ _initialize() {
 }
 
 _finalize() {
-  ${IP6TABLES_INIT} save && \
-  ${IP6TABLES_INIT} restart
+  if [ -f /etc/rc.d/init.d/ip6tables ]; then
+    /etc/rc.d/init.d/ip6tables save
+  else
+    /usr/libexec/iptables/ip6tables.init save
+  fi
 }
 
 _initialize

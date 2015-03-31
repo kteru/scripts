@@ -1,6 +1,5 @@
 #!/bin/sh
 #
-# 20110902
 # iptables down
 #
 # === this script should be placed /etc/network/if-post-down.d ===
