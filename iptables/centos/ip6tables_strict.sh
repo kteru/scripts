@@ -37,17 +37,11 @@ ${IP6TABLES} -P FORWARD DROP
 # ACCEPT lo
 ${IP6TABLES} -A INPUT -i lo -j ACCEPT
 
-# ACCEPT link local
-${IP6TABLES} -A INPUT -s fe80::/10 -j ACCEPT
-
 # ACCEPT reply
 ${IP6TABLES} -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 
-# DROP ping of death
-${IP6TABLES} -N pod
-${IP6TABLES} -A pod -m limit --limit 1/s --limit-burst 5 -j ACCEPT
-${IP6TABLES} -A pod -j DROP
-${IP6TABLES} -A INPUT -p icmpv6 --icmpv6-type echo-request -j pod
+# ACCEPT icmpv6
+${IP6TABLES} -A INPUT -p icmpv6 -j ACCEPT
 
 # REJECT tcp/113 ident
 ${IP6TABLES} -A INPUT -p tcp --dport 113 -j REJECT --reject-with tcp-reset
