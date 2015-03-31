@@ -6,8 +6,6 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 export PATH
 
 IPTABLES=/sbin/iptables
-IPTABLES_INIT=/etc/init.d/iptables
-
 
 _initialize() {
   ${IPTABLES} -F
@@ -20,8 +18,11 @@ _initialize() {
 }
 
 _finalize() {
-  ${IPTABLES_INIT} save && \
-  ${IPTABLES_INIT} restart
+  if [ -f /etc/rc.d/init.d/iptables ]; then
+    /etc/rc.d/init.d/iptables save
+  else
+    /usr/libexec/iptables/iptables.init save
+  fi
 }
 
 _initialize
