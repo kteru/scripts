@@ -1,6 +1,5 @@
 #!/bin/sh
 #
-# 20120905
 # iptables
 #
 PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
